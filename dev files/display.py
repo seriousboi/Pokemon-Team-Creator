@@ -35,79 +35,32 @@ def info_pokemon(window,pokemon,anchor,x,y):
     if pokemon == None:
         return
 
-    pokemon= pokedex[pokemon]
-
-
     if anchor == "topleft":
 
-        name_area= text(window,pokemon["name"],17,(0,0,0),"topleft",x,y+13)
+        name_area= text(window,pokemon.name,17,(0,0,0),"topleft",x,y+13)
 
         try:
-            icon_name= "data/pokemons/" + pokemon["ID"] + ".png"
+            icon_name= "data/pokemons/" + pokemon.picid + ".png"
             icon_image= pygame.image.load(icon_name)
         except:
             icon_image= pygame.image.load("data/pokemons/unknown.png")
         window.blit(icon_image,(x+155,y+4))
 
-        type_name= "data/types/" + pokemon["type"][0] + "IC.GIF"
+        type_name= "data/types/" + pokemon.type[0] + "IC.GIF"
         type_image= pygame.image.load(type_name)
         window.blit(type_image,(x,y))
 
-        if pokemon["type"][1] != "none":
+        if pokemon.type[1] != "none":
 
-            type_name= "data/types/" + pokemon["type"][1] + "IC.GIF"
+            type_name= "data/types/" + pokemon.type[1] + "IC.GIF"
             type_image= pygame.image.load(type_name)
             window.blit(type_image,(x+35,y))
 
-            if pokemon["ability"][0]:
-                text(window,"["+pokemon["ability"][3]+"]",12,(0,0,0),"topleft",x+70,y)
+            if pokemon.ability.weaknesses_influent:
+                text(window,"["+pokemon.ability.ability_name+"]",12,(0,0,0),"topleft",x+70,y)
         else:
-            if pokemon["ability"][0]:
-                text(window,"["+pokemon["ability"][3]+"]",12,(0,0,0),"topleft",x+35,y)
-
-    info_area= name_area
-    info_area.height= info_area.height+ 15
-    info_area.y= info_area.y -15
-
-    return info_area
-
-
-
-def info_pokemon(window,pokemon,anchor,x,y):
-    global pokedex
-
-    if pokemon == None:
-        return
-
-    pokemon= pokedex[pokemon]
-
-
-    if anchor == "topleft":
-
-        name_area= text(window,pokemon["name"],17,(0,0,0),"topleft",x,y+13)
-
-        try:
-            icon_name= "data/pokemons/" + pokemon["ID"] + ".png"
-            icon_image= pygame.image.load(icon_name)
-        except:
-            icon_image= pygame.image.load("data/pokemons/unknown.png")
-        window.blit(icon_image,(x+155,y+4))
-
-        type_name= "data/types/" + pokemon["type"][0] + "IC.GIF"
-        type_image= pygame.image.load(type_name)
-        window.blit(type_image,(x,y))
-
-        if pokemon["type"][1] != "none":
-
-            type_name= "data/types/" + pokemon["type"][1] + "IC.GIF"
-            type_image= pygame.image.load(type_name)
-            window.blit(type_image,(x+35,y))
-
-            if pokemon["ability"][0]:
-                text(window,"["+pokemon["ability"][3]+"]",12,(0,0,0),"topleft",x+70,y)
-        else:
-            if pokemon["ability"][0]:
-                text(window,"["+pokemon["ability"][3]+"]",12,(0,0,0),"topleft",x+35,y)
+            if pokemon.ability.weaknesses_influent:
+                text(window,"["+pokemon.ability.ability_name+"]",12,(0,0,0),"topleft",x+35,y)
 
     info_area= name_area
     info_area.height= info_area.height+ 15
@@ -139,16 +92,17 @@ def display_page(window,roster,page):
     text(window,"page "+str(page+1),20,(0,0,0),"midbottom",985,585)
     hitboxes= hitboxes + [text(window,"<<",20,(0,0,0),"bottomleft",885,585)]
     hitboxes= hitboxes + [text(window,">>",20,(0,0,0),"bottomright",1085,585)]
+    roster_size= len(roster.pokemon_list)
 
     for i in range(10):
         hitbox= pygame.draw.rect(window,(200,200,200),(885,15+i*55,200,40),0)
         pygame.draw.rect(window,(100,100,100),(885,15+i*55,200,40),1)
 
-        if i+10*(page) < len(roster):
+        if i+10*(page) < roster_size:
             hitboxes= hitboxes + [hitbox]
 
-    for i in range((page)*10,min(10+(page)*10,len(roster))):
-        info_pokemon(window,roster[i],"topleft",889,19+(i%10)*55)
+    for i in range((page)*10,min(10+(page)*10,roster_size)):
+        info_pokemon(window,roster.pokemon_list[i],"topleft",889,19+(i%10)*55)
 
     return hitboxes
 
@@ -199,31 +153,38 @@ def display_pokemon_weaknesses(window,pokemon,x,y):
     for type_name in existing_types:
 
         if type_name != "none":
+            value= weaknesses_chart[types_values[type_name]]
 
-            if weaknesses_chart[types_values[type_name]] == 0:
+            color_2= [0,0,0]
+
+            if value == 0:
                 color_1= [80,80,80]
                 color_2= [230,230,230]
                 coef= "0"
-            elif weaknesses_chart[types_values[type_name]] == 0.25:
+            elif value == 1/4 :
                 color_1= [50,220,120]
-                color_2= [0,0,0]
                 coef= "1/4"
-            elif weaknesses_chart[types_values[type_name]] == 0.5:
+            elif value == 1/2:
                 color_1= [120,250,120]
-                color_2= [0,0,0]
                 coef= "1/2"
-            elif weaknesses_chart[types_values[type_name]] == 1:
+            elif value == 1:
                 color_1= [200,200,200]
-                color_2= [0,0,0]
                 coef= "1"
-            elif weaknesses_chart[types_values[type_name]] == 2:
+            elif value == 3/2:
+                color_1= [225,160,160]
+                coef= "1.5"
+            elif value == 2:
                 color_1= [250,120,120]
-                color_2= [0,0,0]
                 coef= "2"
-            elif weaknesses_chart[types_values[type_name]] == 4:
+            elif value == 3:
+                color_1= [225,85,85]
+                coef= "3"
+            elif value == 4:
                 color_1= [200,50,50]
-                color_2= [0,0,0]
                 coef= "4"
+            elif value == 8:
+                color_1= [160,20,80]
+                coef= "8"
 
             pygame.draw.rect(window,(200,200,200),(x+i*36,y,36,20),0)
             pygame.draw.rect(window,color_1,(x+i*36,y+20,36,20),0)
@@ -246,21 +207,10 @@ def display_pokemon_roles(window,pokemon,x,y):
     if pokemon == None:
         return
 
-    pokemon= pokedex[pokemon]
-
-    potential_roles= [['physical attacker','physical attacker'],['special attacker','special attacker'],['physical wall','physical wall'],['special wall','special wall'],['stealth rock','rock setter'],['defog','defoger'],['rapid spin','spiner'],['priority','priority user']]
-
     i= 0
-    for potential_role in potential_roles:
-
-        if pokemon[potential_role[0]]:
-            text(window,potential_role[1],20,(0,0,0),"topleft",x,y+i*30)
-            i= i + 1
-
-
-
-
-
+    for role in pokemon.properties:
+        text(window,role,20,(0,0,0),"topleft",x,y+i*30)
+        i= i + 1
 
 
 

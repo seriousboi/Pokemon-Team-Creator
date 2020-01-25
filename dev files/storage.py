@@ -1,3 +1,4 @@
+from pokedex import *
 
 
 
@@ -39,7 +40,7 @@ def save_team(team):
 
     for pokemon in team:
 
-        new_txt= new_txt + "," + pokemon
+        new_txt= new_txt + "," + pokemon.name
 
     new_txt= new_txt + "]" + "."
 
@@ -86,6 +87,7 @@ def delete_team(number):
 
 
 def get_team(number):
+    global pokedex
     teams= open("data/teams.txt","r")
     txt= teams.read()
     teams.close()
@@ -115,7 +117,7 @@ def get_team(number):
               else:
                   i_2= find(txt,"]",i_2+1)
 
-              team= team + [txt[i_1+1:i_2]]
+              team= team + [get_pokemon_from_name(txt[i_1+1:i_2],pokedex)]
 
     return team
 

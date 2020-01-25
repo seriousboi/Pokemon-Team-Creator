@@ -67,13 +67,10 @@ def type_weaknesses(defending_type):
 def pokemon_weaknesses(pokemon):
     global pokedex, types_values
 
-    weaknesses_chart= type_weaknesses(pokedex[pokemon]["type"])
+    weaknesses_chart= type_weaknesses(pokemon.type)
 
-
-    if pokedex[pokemon]["ability"][0]:
-        value= types_values[pokedex[pokemon]["ability"][1]]
-        coef= pokedex[pokemon]["ability"][2]
-        weaknesses_chart[value]= weaknesses_chart[value]*coef
+    if pokemon.ability.weaknesses_influent:
+        weaknesses_chart= pokemon.ability.ability_function(weaknesses_chart,types_values)
 
     return weaknesses_chart
 
@@ -104,12 +101,10 @@ def typing_only_weaknesses(typing):
     global types_values
 
     weaknesses_chart= type_weaknesses(typing)
+    ability= typing[2]
 
-
-    if typing[2][0]:
-        value= types_values[typing[2][1]]
-        coef= typing[2][2]
-        weaknesses_chart[value]= weaknesses_chart[value]*coef
+    if ability.weaknesses_influent:
+        weaknesses_chart= ability.ability_function(weaknesses_chart,types_values)
 
     return weaknesses_chart
 

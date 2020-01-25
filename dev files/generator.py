@@ -97,12 +97,12 @@ def generate_team_advanced(window,team,roster,requirements,mega):
 
     progression= [0]
 
-    if len(team) + len(roster) < 6:
+    if len(team) + len(roster.pokemon_list) < 6:
         return []
 
     already_mega= False
     for pokemon in team:
-        if pokedex[pokemon]["mega"] == True:
+        if "mega" in pokemon.properties:
             already_mega= True
 
 
@@ -110,15 +110,15 @@ def generate_team_advanced(window,team,roster,requirements,mega):
     mega_index=[]
     non_mega_roster= []
     mega_roster= []
-    for pokemon in roster:
-        if pokedex[pokemon]["mega"] == False:
+    for pokemon in roster.pokemon_list:
+        if not "mega" in pokemon.properties:
             non_mega_roster= non_mega_roster + [pokemon]
-            type_ = pokedex[pokemon]["type"] + [pokedex[pokemon]["ability"]]
+            type_ = pokemon.type + [pokemon.ability]
             if not type_ in non_mega_index:
                 non_mega_index= non_mega_index + [type_]
         else:
             mega_roster= mega_roster + [pokemon]
-            type_ = pokedex[pokemon]["type"] + [pokedex[pokemon]["ability"]]
+            type_ = pokemon.type + [pokemon.ability]
             if not type_ in mega_index:
                 mega_index= mega_index + [type_]
 
@@ -155,7 +155,7 @@ def generate_team(window,team,roster,requirements,progression,progression_goal):
     index= []
     for pokemon in team + roster:
 
-        type_ = pokedex[pokemon]["type"] + [pokedex[pokemon]["ability"]]
+        type_ = pokemon.type + [pokemon.ability]
 
         if not type_ in index:
 
@@ -166,7 +166,7 @@ def generate_team(window,team,roster,requirements,progression,progression_goal):
 
         i=0
 
-        while pokedex[pokemon]["type"] + [pokedex[pokemon]["ability"]] != index[i]:
+        while pokemon.type + [pokemon.ability] != index[i]:
 
             i= i+1
 
@@ -199,7 +199,7 @@ def generate_team(window,team,roster,requirements,progression,progression_goal):
 
 
 def generate_team_rec(window,types,index,requirements,progression,progression_goal):
-
+    
     if len(types) >= 6:
 
         typings= []
@@ -237,7 +237,7 @@ def find_pokemons_with_typing(typing,roster):
     pokemons= []
     for pokemon in roster:
 
-        if pokedex[pokemon]["type"] + [pokedex[pokemon]["ability"]] == typing:
+        if pokemon.type + [pokemon.ability] == typing:
 
             pokemons= pokemons + [pokemon]
 
@@ -282,7 +282,6 @@ def filter_teams(window,teams,roles,progression,progression_goal):
 
 
 def main_roles_fullfiled(team,roles):
-    global pokedex
 
     main_roles= {"physical attacker":None,"special attacker":None,"physical wall":None,"special wall":None}
 
@@ -298,23 +297,23 @@ def main_roles_fullfiled(team,roles):
 
     for pokemon in team:
 
-        if pokedex[pokemon]["physical attacker"]:
-            if pokedex[pokemon]["special attacker"]:
+        if "physical attacker" in pokemon.properties:
+            if "special attacker" in pokemon.properties:
                 A_team= A_team + 1
             else:
                 main_roles["physical attacker"]= main_roles["physical attacker"] - 1
 
-        elif pokedex[pokemon]["special attacker"]:
+        elif "special attacker" in pokemon.properties:
             main_roles["special attacker"]= main_roles["special attacker"] - 1
 
 
-        if pokedex[pokemon]["physical wall"]:
-            if pokedex[pokemon]["special wall"]:
+        if "physical wall" in pokemon.properties:
+            if "special wall" in pokemon.properties:
                 D_team= D_team + 1
             else:
                 main_roles["physical wall"]= main_roles["physical wall"] - 1
 
-        elif pokedex[pokemon]["special wall"]:
+        elif "special wall" in pokemon.properties:
             main_roles["special wall"]= main_roles["special wall"] - 1
 
     for role in main_roles:
@@ -330,16 +329,13 @@ def main_roles_fullfiled(team,roles):
 
 
 def role_fullfiled(team,role):
-    global pokedex
 
-    i= 0
-
+    candidates_amount= 0
     for pokemon in team:
-        for key in role[2]:
-            if pokedex[pokemon][key]:
-                i= i + 1
-                break
-        if i >= role[0]:
-            return True
+        if role[1] in pokemon.properties:
+            candidates_amount= candidates_amount + 1
 
-    return False
+    if candidates_amount >= role[0]:
+        return True
+    else:
+        return False

@@ -2,6 +2,7 @@ from pokedex import *
 from storage import *
 from display import *
 from generator import *
+from rosters import *
 import pygame
 
 
@@ -109,7 +110,7 @@ def team_builder(window):
     global rosters
 
     already_saved= False
-    current_roster= rosters["OU"]
+    current_roster= rosters[0]
     current_team= []
     current_page= 0
 
@@ -143,10 +144,10 @@ def team_builder(window):
                 already_saved= True
 
             elif hitbox_choices[0].collidepoint(event.pos):
-                current_page= (current_page-1)%(((len(current_roster)-1)//10)+1)
+                current_page= (current_page-1)%(((len(current_roster.pokemon_list)-1)//10)+1)
 
             elif hitbox_choices[1].collidepoint(event.pos):
-                current_page= (current_page+1)%(((len(current_roster)-1)//10)+1)
+                current_page= (current_page+1)%(((len(current_roster.pokemon_list)-1)//10)+1)
 
             elif hitbox_undo.collidepoint(event.pos) and len(current_team) > 0:
                 current_team.pop()
@@ -157,7 +158,7 @@ def team_builder(window):
                 hitbox_rosters= {}
                 i=0
                 for roster in rosters:
-                    hitbox_rosters[roster]= text(window,roster,20,(0,0,0),"topright",1085,15+i*30)
+                    hitbox_rosters[roster]= text(window,roster.name,20,(0,0,0),"topright",1085,15+i*30)
                     i= i+1
 
                 pygame.display.update()
@@ -171,14 +172,14 @@ def team_builder(window):
 
                     if hitbox_rosters[roster].collidepoint(event.pos):
 
-                        current_roster= rosters[roster]
+                        current_roster= roster
 
             elif len(current_team) < 6:
 
                 for i in range(2,len(hitbox_choices)):
 
                     if hitbox_choices[i].collidepoint(event.pos):
-                        current_team= current_team + [current_roster[i-2+current_page*10]]
+                        current_team= current_team + [current_roster.pokemon_list[i-2+current_page*10]]
                         already_saved= False
 
 
@@ -295,13 +296,13 @@ def team_generator(window):
         hitboxes[1]= hitboxes[1] + [pygame.Rect(225+9+36*i,110,18,30)]
 
     current_requirements= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    current_roster= rosters["OU"]
+    current_roster= rosters[0]
     hitbox_mega= (15,405,200,30)
     stealth_rock_state= [False,"off"]
     anti_hazard_state= [False,"off"]
     priority_state= [False,"off"]
     mega_state= [False,"off"]
-    roles= [[0,"physical attacker",["physical attacker"]],[0,"special attacker",["special attacker"]],[0,"physical wall",["physical wall"]],[0,"special wall",["special wall"]],[0,'rock setter',["stealth rock"]],[0,"hazard remover",["defog","rapid spin"]],[0,"priority user",["priority"]]]
+    roles= [[0,"physical attacker"],[0,"special attacker"],[0,"physical wall"],[0,"special wall"],[0,'rock setter'],[0,"defoger"],[0,"spiner"],[0,"priority user"]]
     current_team= []
 
 
@@ -366,7 +367,7 @@ def team_generator(window):
                 hitbox_rosters= {}
                 i=0
                 for roster in rosters:
-                    hitbox_rosters[roster]= text(window,roster,20,(0,0,0),"topright",1085,15+i*30)
+                    hitbox_rosters[roster]= text(window,roster.name,20,(0,0,0),"topright",1085,15+i*30)
                     i= i+1
 
                 pygame.display.update()
@@ -380,7 +381,7 @@ def team_generator(window):
 
                     if hitbox_rosters[roster].collidepoint(event.pos):
 
-                        current_roster= rosters[roster]
+                        current_roster= roster
 
             else:
                 for i in range(len(hitboxes_roles)):
@@ -398,7 +399,7 @@ def team_generator(window):
 def pokedex_info(window):
     global rosters
 
-    current_roster= rosters["all_pokemons"]
+    current_roster= all_pokemons
     current_page= 0
     current_pokemon= None
 
@@ -430,10 +431,10 @@ def pokedex_info(window):
                     return "menu"
 
             elif hitbox_choices[0].collidepoint(event.pos):
-                current_page= (current_page-1)%(((len(current_roster)-1)//10)+1)
+                current_page= (current_page-1)%(((len(current_roster.pokemon_list)-1)//10)+1)
 
             elif hitbox_choices[1].collidepoint(event.pos):
-                current_page= (current_page+1)%(((len(current_roster)-1)//10)+1)
+                current_page= (current_page+1)%(((len(current_roster.pokemon_list)-1)//10)+1)
 
             elif hitbox_roster.collidepoint(event.pos):
                 pygame.draw.rect(window,(150,250,150),(880,10,210,580),0)
@@ -441,7 +442,7 @@ def pokedex_info(window):
                 hitbox_rosters= {}
                 i=0
                 for roster in rosters:
-                    hitbox_rosters[roster]= text(window,roster,20,(0,0,0),"topright",1085,15+i*30)
+                    hitbox_rosters[roster]= text(window,roster.name,20,(0,0,0),"topright",1085,15+i*30)
                     i= i+1
 
                 pygame.display.update()
@@ -455,17 +456,17 @@ def pokedex_info(window):
 
                     if hitbox_rosters[roster].collidepoint(event.pos):
 
-                        current_roster= rosters[roster]
+                        current_roster= roster
 
             else:
                 for i in range(2,len(hitbox_choices)):
 
                     if hitbox_choices[i].collidepoint(event.pos):
-                        current_pokemon= current_roster[i-2+current_page*10]
+                        current_pokemon= current_roster.pokemon_list[i-2+current_page*10]
 
 
 
-def main_menu():
+def main():
 
     pygame.init()
     window = pygame.display.set_mode((1100,600))
