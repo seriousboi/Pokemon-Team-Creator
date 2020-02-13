@@ -7,23 +7,33 @@ import pygame
 
 
 
-def choose_team(window):
+def team_manager(window,mode,teams):
+    global type_chart
 
-    teams= open("data/teams.txt","r")
-    number= get_team_ammount(teams.read())
-    teams.close()
-    teams= []
+    if mode == "select" or mode == "manage":
+        team_file= open("data/teams.txt","r")
+        number= get_team_ammount(team_file.read())
+        team_file.close()
+        for i in range(number):
+            teams= teams + [get_team(i)]
+
     current_team= -1
     current_page= 0
-
-    for i in range(number):
-        teams= teams + [get_team(i)]
 
     window.fill((150,250,150))
     hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
     hitbox_prev= text(window,"<<",20,(0,0,0),"topleft",15,340)
     hitbox_nex= text(window,">>",20,(0,0,0),"topright",215,340)
-    hitbox_select= text(window,"select team",20,(0,0,0),"bottomright",1085,585)
+    hitbox_sort= text(window,"sort",20,(0,0,0),"midbottom",550,585)
+
+    if mode == "select":
+        hitbox_select= text(window,"select team",20,(0,0,0),"bottomright",1085,585)
+    elif mode == "manage":
+        hitbox_delete= text(window,"delete team",20,(0,0,0),"bottomright",1085,585)
+    elif mode == "save":
+        hitbox_save= text(window,"save team",20,(0,0,0),"bottomright",1085,585)
+
+
     hitbox_page= (75,340,80,30)
 
     while True:
@@ -46,7 +56,12 @@ def choose_team(window):
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             if hitbox_back.collidepoint(event.pos):
+                if mode == "select":
                     return []
+                elif mode == "manage":
+                    return "menu"
+                elif mode == "save":
+                    return "team generator"
 
             elif hitbox_prev.collidepoint(event.pos) and len(teams)!=0:
                 current_page= (current_page-1)%(((len(teams)-1)//5)+1)
@@ -56,8 +71,23 @@ def choose_team(window):
                 current_page= (current_page+1)%(((len(teams)-1)//5)+1)
                 current_team= -1
 
-            elif hitbox_select.collidepoint(event.pos) and current_team != -1 and len(teams[current_team+current_page*5]) < 6:
+            elif hitbox_sort.collidepoint(event.pos):
+                teams= sort_teams(window,teams,type_chart,True)
+                pygame.draw.rect(window,(150,250,150),(550-300/2,585-100/2,300,100),0)
+                hitbox_sort= text(window,"sort",20,(0,0,0),"midbottom",550,585)
+
+            elif mode == "select" and hitbox_select.collidepoint(event.pos) and current_team != -1 and len(teams[current_team+current_page*5]) < 6:
                 return teams[current_team+current_page*5]
+
+            elif mode == "manage" and hitbox_delete.collidepoint(event.pos) and current_team != -1:
+                delete_team(current_team+current_page*5)
+                del teams[current_team+current_page*5]
+                current_team= -1
+
+            elif mode == "save" and hitbox_save.collidepoint(event.pos) and current_team != -1:
+                save_team(teams[current_team+current_page*5])
+                del teams[current_team+current_page*5]
+                current_team= -1
 
             else:
                 for i in range(len(hitboxes)):
@@ -215,67 +245,6 @@ def chart(window):
 
 
 
-def team_manager(window):
-    teams= open("data/teams.txt","r")
-    number= get_team_ammount(teams.read())
-    teams.close()
-    teams= []
-    current_team= -1
-    current_page= 0
-
-    for i in range(number):
-        teams= teams + [get_team(i)]
-
-    window.fill((150,250,150))
-    hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
-    hitbox_prev= text(window,"<<",20,(0,0,0),"topleft",15,340)
-    hitbox_nex= text(window,">>",20,(0,0,0),"topright",215,340)
-    hitbox_delete= text(window,"delete team",20,(0,0,0),"bottomright",1085,585)
-    hitbox_page= (75,340,80,30)
-
-    while True:
-        hitboxes= display_teams(window,teams,current_page,current_team)
-        pygame.draw.rect(window,(150,250,150),hitbox_page,0)
-        hitbox_page= text(window,"page "+str(current_page+1),20,(0,0,0),"midtop",115,340)
-
-        if current_team != -1:
-            display_team_weaknesses(window,teams[current_team+current_page*5],330,340)
-        else:
-            display_team_weaknesses(window,[],330,340)
-
-        pygame.display.update()
-
-        event= pygame.event.wait()
-
-        if event.type == pygame.QUIT:
-                return "quit"
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-
-            if hitbox_back.collidepoint(event.pos):
-                    return "menu"
-
-            elif hitbox_prev.collidepoint(event.pos) and len(teams)!=0:
-                current_page= (current_page-1)%(((len(teams)-1)//5)+1)
-                current_team= -1
-
-            elif hitbox_nex.collidepoint(event.pos) and len(teams)!=0:
-                current_page= (current_page+1)%(((len(teams)-1)//5)+1)
-                current_team= -1
-
-            elif hitbox_delete.collidepoint(event.pos) and current_team != -1:
-                delete_team(current_team+current_page*5)
-                del teams[current_team+current_page*5]
-                current_team= -1
-
-            else:
-                for i in range(len(hitboxes)):
-
-                    if hitboxes[i].collidepoint(event.pos):
-                        current_team= i
-
-
-
 def team_generator(window):
     global rosters
 
@@ -305,9 +274,6 @@ def team_generator(window):
     roles= [[0,"physical attacker"],[0,"special attacker"],[0,"physical wall"],[0,"special wall"],[0,'rock setter'],[0,"defoger"],[0,"spiner"],[0,"priority user"]]
     current_team= []
 
-
-
-
     while True:
 
         pygame.draw.rect(window,(150,150,200),(10,10,210,325),0)
@@ -334,7 +300,7 @@ def team_generator(window):
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             if hitbox_add_team.collidepoint(event.pos):
-                current_team= choose_team(window)
+                current_team= team_manager(window,"select",[])
                 window.fill((150,250,150))
                 text(window,"back",20,(0,0,0),"bottomleft",15,585)
                 text(window,"add starting team",20,(0,0,0),"topleft",15,345)
@@ -358,7 +324,8 @@ def team_generator(window):
 
             elif hitbox_generate.collidepoint(event.pos):
                 generating_params= [current_team,current_roster,current_requirements,mega_state[0],roles]
-                return generating(window,generating_params)
+                teams= generating(window,generating_params)
+                return team_manager(window,"save",teams)
 
             elif hitbox_roster.collidepoint(event.pos):
 
@@ -396,6 +363,62 @@ def team_generator(window):
 
 
 
+def generation_finished(window,teams):
+
+    window.fill((150,250,150))
+    hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
+    hitbox_prev= text(window,"<<",20,(0,0,0),"topleft",15,340)
+    hitbox_nex= text(window,">>",20,(0,0,0),"topright",215,340)
+    hitbox_save= text(window,"save team",20,(0,0,0),"bottomright",1085,585)
+    hitbox_page= (75,340,80,30)
+
+    current_team= -1
+    current_page= 0
+
+
+    while True:
+        hitboxes= display_teams(window,teams,current_page,current_team)
+        pygame.draw.rect(window,(150,250,150),hitbox_page,0)
+        hitbox_page= text(window,"page "+str(current_page+1),20,(0,0,0),"midtop",115,340)
+
+        if current_team != -1:
+            display_team_weaknesses(window,teams[current_team+current_page*5],330,340)
+        else:
+            display_team_weaknesses(window,[],330,340)
+
+        pygame.display.update()
+
+        event= pygame.event.wait()
+
+        if event.type == pygame.QUIT:
+                return "quit"
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            if hitbox_back.collidepoint(event.pos):
+                    return "team generator"
+
+            elif hitbox_prev.collidepoint(event.pos) and len(teams)!=0:
+                current_page= (current_page-1)%(((len(teams)-1)//5)+1)
+                current_team= -1
+
+            elif hitbox_nex.collidepoint(event.pos) and len(teams)!=0:
+                current_page= (current_page+1)%(((len(teams)-1)//5)+1)
+                current_team= -1
+
+            elif hitbox_save.collidepoint(event.pos) and current_team != -1:
+                save_team(teams[current_team+current_page*5])
+                del teams[current_team+current_page*5]
+                current_team= -1
+
+            else:
+                for i in range(len(hitboxes)):
+
+                    if hitboxes[i].collidepoint(event.pos):
+                        current_team= i
+
+
+
 def pokedex_info(window):
     global rosters
 
@@ -414,9 +437,6 @@ def pokedex_info(window):
         hitbox_choices= display_page(window,current_roster,current_page)
         display_pokemon_weaknesses(window,current_pokemon,225,15)
         display_pokemon_roles(window,current_pokemon,15,70)
-
-
-
 
         pygame.display.update()
 
@@ -485,7 +505,7 @@ def main():
         if state == "team builder":
             state= team_builder(window)
         if state == "team manager":
-            state= team_manager(window)
+            state= team_manager(window,"manage",[])
         if state == "chart":
             state= chart(window)
         if state == "team generator":

@@ -20,59 +20,8 @@ def generating(window,generating_params):
     [teams,progression,progression_goal]= generate_team_advanced(window,team,roster,requirements,mega)
 
     teams= filter_teams(window,teams,roles,progression,progression_goal)
-
-    window.fill((150,250,150))
-    hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
-    hitbox_prev= text(window,"<<",20,(0,0,0),"topleft",15,340)
-    hitbox_nex= text(window,">>",20,(0,0,0),"topright",215,340)
-    hitbox_save= text(window,"save team",20,(0,0,0),"bottomright",1085,585)
-    hitbox_page= (75,340,80,30)
-
-    current_team= -1
-    current_page= 0
-
-
-    while True:
-        hitboxes= display_teams(window,teams,current_page,current_team)
-        pygame.draw.rect(window,(150,250,150),hitbox_page,0)
-        hitbox_page= text(window,"page "+str(current_page+1),20,(0,0,0),"midtop",115,340)
-
-        if current_team != -1:
-            display_team_weaknesses(window,teams[current_team+current_page*5],330,340)
-        else:
-            display_team_weaknesses(window,[],330,340)
-
-        pygame.display.update()
-
-        event= pygame.event.wait()
-
-        if event.type == pygame.QUIT:
-                return "quit"
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-
-            if hitbox_back.collidepoint(event.pos):
-                    return "team generator"
-
-            elif hitbox_prev.collidepoint(event.pos) and len(teams)!=0:
-                current_page= (current_page-1)%(((len(teams)-1)//5)+1)
-                current_team= -1
-
-            elif hitbox_nex.collidepoint(event.pos) and len(teams)!=0:
-                current_page= (current_page+1)%(((len(teams)-1)//5)+1)
-                current_team= -1
-
-            elif hitbox_save.collidepoint(event.pos) and current_team != -1:
-                save_team(teams[current_team+current_page*5])
-                del teams[current_team+current_page*5]
-                current_team= -1
-
-            else:
-                for i in range(len(hitboxes)):
-
-                    if hitboxes[i].collidepoint(event.pos):
-                        current_team= i
-
+    return teams
+    
 
 
 def display_progression(window,progression,progression_goal):
@@ -199,7 +148,7 @@ def generate_team(window,team,roster,requirements,progression,progression_goal):
 
 
 def generate_team_rec(window,types,index,requirements,progression,progression_goal):
-    
+
     if len(types) >= 6:
 
         typings= []

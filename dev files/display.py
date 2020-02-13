@@ -111,7 +111,7 @@ def display_page(window,roster,page):
 def display_team_weaknesses(window,team,x,y):
     global existing_types, types_values
 
-    weaknesses_chart= team_weaknesses(team)
+    weaknesses_chart= get_team_weaknesses(team)
     i= 0
 
     for type_name in existing_types:

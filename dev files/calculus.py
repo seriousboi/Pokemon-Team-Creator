@@ -1,5 +1,5 @@
 from pokedex import *
-import math
+import pygame, math
 
 
 
@@ -76,7 +76,7 @@ def pokemon_weaknesses(pokemon):
 
 
 
-def team_weaknesses(team):
+def get_team_weaknesses(team):
     global existing_types
 
     team_weaknesses_chart= []
@@ -128,3 +128,84 @@ def typings_only_weaknesses(typings):
                 typings_weaknesses_chart[i]= typings_weaknesses_chart[i] -1
 
     return typings_weaknesses_chart
+
+
+
+def get_team_weakness_value(team,type_chart):
+    team_weakness_value= 0
+    team_weaknesses= get_team_weaknesses(team)
+    for weakness_value in team_weaknesses:
+        team_weakness_value += weakness_value
+    return team_weakness_value
+
+
+
+def sort_teams(window,teams,type_chart,display_progression):
+    teams_amount= len(teams)
+    if teams_amount == 0:
+        return []
+    progression_goal= int(teams_amount*(1+(teams_amount+1)/2))
+    progression= [0]
+
+    teams_weaknesses_values= []
+    for team in teams:
+        teams_weaknesses_values += [get_team_weakness_value(team,type_chart)]
+
+        pygame.event.pump()
+        if display_progression == True:
+            display_sort_progression(window,progression,progression_goal)
+
+    sorted_teams= []
+    for amount_sorted in range(teams_amount):
+        max_weakness_value= -6*19
+        max_index= None
+        for index in range(teams_amount-amount_sorted):
+            weakness_value= teams_weaknesses_values[index]
+            if weakness_value > max_weakness_value:
+                max_weakness_value= weakness_value
+                max_index= index
+
+            pygame.event.pump()
+            if display_progression == True:
+                display_sort_progression(window,progression,progression_goal)
+
+        sorted_teams += [teams[max_index]]
+        del teams[max_index]
+        del teams_weaknesses_values[max_index]
+
+    return sorted_teams
+
+
+
+def display_sort_progression(window,progression,progression_goal):
+    progression[0] += 1
+    if progression[0]%(progression_goal/100) == 0:
+        advancement= int(100*progression[0]/progression_goal)
+        pygame.draw.rect(window,(150,250,150),(550-300/2,585-100/2,300,100),0)
+        text(window,"sorting "+str(advancement)+"%",20,(0,0,0),"midbottom",550,585)
+        pygame.display.update()
+
+
+
+def text(window,message,size,color,anchor,x,y):
+
+    font = pygame.font.SysFont("verdana", size)
+    text = font.render(message,True,color)
+    area = text.get_rect()
+    width= area.width
+    height= area.height
+
+    vect= {"topleft":[0,0],
+           "bottomleft":[0,-2],
+           "topright":[-2,0],
+           "bottomright":[-2,-2],
+           "midtop":[-1,0],
+           "midleft":[0,-1],
+           "midbottom":[-1,-2],
+           "midright":[-2,-1],
+           "center":[-1,-1]}
+
+    x= x + vect[anchor][0]*width/2
+    y= y + vect[anchor][1]*height/2
+
+    return window.blit(text,(x,y))
