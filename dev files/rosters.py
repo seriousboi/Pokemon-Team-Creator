@@ -9,13 +9,30 @@ class Roster():
         self.pokemon_list= pokemon_list
 
 
-OU_7G=[]
+
+rosters= []
+sorted_rosters= []
+tiers= ["OU","UU","RU","NU","PU","uber","nd"]
+
+
+
+for generation in range(8):
+    sorted_rosters += [{}]
+    for tier in tiers:
+        sorted_rosters[generation][tier]= Roster(str(generation+1)+"G "+tier,[])
+
+
+all_mons= Roster("all pokemons",[])
 for pokemon in pokedex:
-    if pokemon.tier == "OU":
-        OU_7G += [pokemon]
+    all_mons.pokemon_list += [pokemon]
+    for generation in range(8):
+        sorted_rosters[generation][pokemon.tier[generation]].pokemon_list += [pokemon]
 
 
 
-all_pokemons= Roster("all pokemons",pokedex)
-OU_7G= Roster("OU 7G",OU_7G)
-rosters= [OU_7G,all_pokemons]
+for generation in range(8):
+    for tier in tiers:
+        roster= sorted_rosters[generation][tier]
+        if tier != "nd" and roster.pokemon_list != []:
+            rosters += [roster]
+rosters += [all_mons]

@@ -94,15 +94,30 @@ def display_page(window,roster,page):
     hitboxes= hitboxes + [text(window,">>",20,(0,0,0),"bottomright",1085,585)]
     roster_size= len(roster.pokemon_list)
 
-    for i in range(10):
-        hitbox= pygame.draw.rect(window,(200,200,200),(885,15+i*55,200,40),0)
-        pygame.draw.rect(window,(100,100,100),(885,15+i*55,200,40),1)
+    for index in range(page*10,10+page*10):
+        hitbox= pygame.draw.rect(window,(200,200,200),(885,15+(index%10)*55,200,40),0)
+        pygame.draw.rect(window,(100,100,100),(885,15+(index%10)*55,200,40),1)
 
-        if i+10*(page) < roster_size:
+        if (index%10)+10*(page) < roster_size:
+            info_pokemon(window,roster.pokemon_list[index],"topleft",889,19+(index%10)*55)
             hitboxes= hitboxes + [hitbox]
 
-    for i in range((page)*10,min(10+(page)*10,roster_size)):
-        info_pokemon(window,roster.pokemon_list[i],"topleft",889,19+(i%10)*55)
+    return hitboxes
+
+
+
+def display_rosters(window,rosters,page):
+
+    hitboxes= []
+    pygame.draw.rect(window,(150,250,150),(880,10,210,580),0)
+    text(window,"page "+str(page+1),20,(0,0,0),"midbottom",985,585)
+    hitboxes= hitboxes + [text(window,"<<",20,(0,0,0),"bottomleft",885,585)]
+    hitboxes= hitboxes + [text(window,">>",20,(0,0,0),"bottomright",1085,585)]
+    rosters_amount= len(rosters)
+
+    for index in range((page)*18,min(18+page*18,rosters_amount)):
+        hitbox= text(window,rosters[index].name,20,(0,0,0),"topright",1085,15+(index%18)*30)
+        hitboxes= hitboxes + [hitbox]
 
     return hitboxes
 

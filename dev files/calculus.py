@@ -142,18 +142,15 @@ def get_team_weakness_value(team,type_chart):
 
 def sort_teams(window,teams,type_chart,display_progression):
     teams_amount= len(teams)
-    if teams_amount == 0:
-        return []
     progression_goal= int(teams_amount*(1+(teams_amount+1)/2))
     progression= [0]
 
     teams_weaknesses_values= []
     for team in teams:
-        teams_weaknesses_values += [get_team_weakness_value(team,type_chart)]
-
         pygame.event.pump()
         if display_progression == True:
             display_sort_progression(window,progression,progression_goal)
+        teams_weaknesses_values += [get_team_weakness_value(team,type_chart)]
 
     sorted_teams= []
     for amount_sorted in range(teams_amount):
@@ -179,7 +176,7 @@ def sort_teams(window,teams,type_chart,display_progression):
 
 def display_sort_progression(window,progression,progression_goal):
     progression[0] += 1
-    if progression[0]%(progression_goal/100) == 0:
+    if progression[0]%(1+(progression_goal//100)) == 0:
         advancement= int(100*progression[0]/progression_goal)
         pygame.draw.rect(window,(150,250,150),(550-300/2,585-100/2,300,100),0)
         text(window,"sorting "+str(advancement)+"%",20,(0,0,0),"midbottom",550,585)
