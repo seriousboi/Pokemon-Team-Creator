@@ -30,7 +30,7 @@ def text(window,message,size,color,anchor,x,y):
 
 
 def info_pokemon(window,pokemon,anchor,x,y):
-    global pokedex
+    pokedex= get_pokedex()
 
     if pokemon == None:
         return
@@ -124,7 +124,8 @@ def display_rosters(window,rosters,page):
 
 
 def display_team_weaknesses(window,team,x,y):
-    global existing_types, types_values
+    existing_types= get_existing_types()
+    types_values= get_types_values()
 
     weaknesses_chart= get_team_weaknesses(team)
     i= 0
@@ -156,7 +157,8 @@ def display_team_weaknesses(window,team,x,y):
 
 
 def display_pokemon_weaknesses(window,pokemon,x,y):
-    global existing_types, types_values
+    existing_types= get_existing_types()
+    types_values= get_types_values()
 
     if pokemon == None:
         weaknesses_chart= [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
@@ -215,7 +217,7 @@ def display_pokemon_weaknesses(window,pokemon,x,y):
 
 
 def display_pokemon_roles(window,pokemon,x,y):
-    global pokedex
+    pokedex= get_pokedex()
 
     pygame.draw.rect(window,(150,250,150),(x,y,200,250),0)
 
@@ -230,14 +232,14 @@ def display_pokemon_roles(window,pokemon,x,y):
 
 
 def display_requirements(window,requirements,x,y):
-    global existing_types, types_values
-
+    existing_types= get_existing_types()
+    types_values= get_types_values()
 
     i= 0
 
     for type_name in existing_types:
 
-        if type_name != "none":
+        if types_values[type_name] != 0:
 
             pygame.draw.rect(window,(200,200,200),(x+i*36,y,36,40),0)
 
@@ -265,21 +267,27 @@ def display_requirements(window,requirements,x,y):
 
 
 def display_chart(window,mode):
-    global existing_types, types_values, type_chart
+    existing_types= get_existing_types()
+    types_values= get_types_values()
+    type_chart= get_type_chart()
 
-    pygame.draw.rect(window,(200,200,200),(200,15,684,570),0)
-    i=0
 
-    for type_name in existing_types:
-        if type_name != "none":
-            type_image= pygame.image.load("data/types/" + type_name + "ic.gif")
-            window.blit(type_image,(202+(i+1)*36,23))
-            window.blit(type_image,(202,23+(i+1)*30))
-            i=i+1
 
-    for i in range(20):
-        pygame.draw.line(window,(100,100,100),(200,15+i*30),(884,15+i*30))
-        pygame.draw.line(window,(100,100,100),(200+i*36,15),(200+i*36,585))
+    types_amount= len(existing_types)
+    horizontal_length= types_amount*36
+    vertical_length= types_amount*30
+
+    pygame.draw.rect(window,(200,200,200),(200,15,36*types_amount,30*types_amount),0)
+    for index in range(types_amount-1):
+        pygame.draw.line(window,(100,100,100),(200,15+index*30),(200+horizontal_length,15+index*30))
+        pygame.draw.line(window,(100,100,100),(200+index*36,15),(200+index*36,15+vertical_length))
+        type_image= pygame.image.load("data/types/" + existing_types[index+1] + "ic.gif")
+        window.blit(type_image,(202+(index+1)*36,23))
+        window.blit(type_image,(202,23+(index+1)*30))
+    pygame.draw.line(window,(100,100,100),(200,15+(index+1)*30),(200+horizontal_length,15+(index+1)*30))
+    pygame.draw.line(window,(100,100,100),(200+(index+1)*36,15),(200+(index+1)*36,15+vertical_length))
+    pygame.draw.line(window,(100,100,100),(200,15+(index+2)*30),(200+horizontal_length,15+(index+2)*30))
+    pygame.draw.line(window,(100,100,100),(200+(index+2)*36,15),(200+(index+2)*36,15+vertical_length))
 
     for type_1 in existing_types:
         for type_2 in existing_types:

@@ -21,7 +21,7 @@ def generating(window,generating_params):
 
     teams= filter_teams(window,teams,roles,progression,progression_goal)
     return teams
-    
+
 
 
 def display_progression(window,progression,progression_goal):
@@ -75,8 +75,8 @@ def generate_team_advanced(window,team,roster,requirements,mega):
 
         progression_goal= among(6-len(team),len(non_mega_index))
         progression_goal= 100 + progression_goal - progression_goal%100
-
-        return generate_team(window,team,non_mega_roster,requirements,progression,progression_goal)
+        teams= generate_team(window,team,non_mega_roster,requirements,progression,progression_goal)
+        return [teams,progression,progression_goal]
 
     teams= []
 
@@ -99,7 +99,7 @@ def generate_team_advanced(window,team,roster,requirements,mega):
 
 
 def generate_team(window,team,roster,requirements,progression,progression_goal):
-    global pokedex
+    pokedex= get_pokedex()
 
     index= []
     for pokemon in team + roster:
@@ -181,7 +181,7 @@ def generate_team_rec(window,types,index,requirements,progression,progression_go
 
 
 def find_pokemons_with_typing(typing,roster):
-    global pokedex
+    pokedex= get_pokedex()
 
     pokemons= []
     for pokemon in roster:

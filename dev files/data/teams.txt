@@ -1,1 +1,1 @@
-[2][3,Heatran,Rotom-Wash,Serperior][2,Toxapex,Gliscor].
+[1][3,Heatran,Rotom-Wash,Serperior].

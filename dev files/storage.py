@@ -87,7 +87,6 @@ def delete_team(number):
 
 
 def get_team(number):
-    global pokedex
     teams= open("data/teams.txt","r")
     txt= teams.read()
     teams.close()
@@ -117,7 +116,7 @@ def get_team(number):
               else:
                   i_2= find(txt,"]",i_2+1)
 
-              team= team + [get_pokemon_from_name(txt[i_1+1:i_2],pokedex)]
+              team= team + [get_pokemon_from_name(txt[i_1+1:i_2])]
 
     return team
 

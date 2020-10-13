@@ -3,38 +3,8 @@ from storage import *
 from display import *
 from generator import *
 from rosters import *
+from charts import *
 import pygame
-
-
-
-def main():
-
-    pygame.init()
-    window = pygame.display.set_mode((1100,600))
-    Turtwig= pygame.image.load("data/icons/wig.png")
-    pygame.display.set_icon(Turtwig)
-    pygame.display.set_caption("Pokemon Team Creator (work in progress)")
-    pygame.event.set_blocked(None)
-    pygame.event.set_allowed([pygame.MOUSEBUTTONDOWN,pygame.QUIT])
-
-    state= "menu"
-
-    while state != "quit":
-
-        if state == "menu":
-            state= menu(window)
-        if state == "team builder":
-            state= team_builder(window)
-        if state == "team manager":
-            state= team_manager(window,"manage",[])
-        if state == "chart":
-            state= chart(window)
-        if state == "team generator":
-            state= team_generator(window)
-        if state == "pokedex info":
-            state= pokedex_info(window)
-
-    pygame.display.quit()
 
 
 
@@ -44,11 +14,12 @@ def menu(window):
     title= text(window,"Pokemon Team Creator (work in progress)",30,(0,0,0),"center",550,50)
     Turtwig= pygame.image.load("data/icons/wig.png")
     window.blit(Turtwig,(title.x + title.width,title.y + title.height - 30))
-    hitbox_builder= text(window,"team builder",20,(0,0,0),"center",550,250)
-    hitbox_generator= text(window,"team generator",20,(0,0,0),"center",550,300)
-    hitbox_manager= text(window,"team manager",20,(0,0,0),"center",550,350)
-    hitbox_chart= text(window,"type chart",20,(0,0,0),"center",550,400)
-    hitbox_pokedex= text(window,"pokedex",20,(0,0,0),"center",550,450)
+    hitbox_builder= text(window,"team builder",20,(0,0,0),"center",550,200)
+    hitbox_generator= text(window,"team generator",20,(0,0,0),"center",550,250)
+    hitbox_manager= text(window,"team manager",20,(0,0,0),"center",550,300)
+    hitbox_chart= text(window,"type chart",20,(0,0,0),"center",550,350)
+    hitbox_pokedex= text(window,"pokedex",20,(0,0,0),"center",550,400)
+    hitbox_options= text(window,"options",20,(0,0,0),"center",550,450)
 
     pygame.display.update()
 
@@ -75,10 +46,13 @@ def menu(window):
             elif hitbox_pokedex.collidepoint(event.pos):
                 return "pokedex info"
 
+            elif hitbox_options.collidepoint(event.pos):
+                return "options"
+
 
 
 def team_builder(window):
-    global rosters
+    rosters= get_rosters()
 
     already_saved= False
     current_roster= rosters[0]
@@ -166,9 +140,7 @@ def choose_roster(window,rosters,current_roster):
 
 
 
-
 def team_manager(window,mode,teams):
-    global type_chart
 
     if mode == "select" or mode == "manage":
         team_file= open("data/teams.txt","r")
@@ -184,7 +156,7 @@ def team_manager(window,mode,teams):
     hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
     hitbox_prev= text(window,"<<",20,(0,0,0),"topleft",15,340)
     hitbox_nex= text(window,">>",20,(0,0,0),"topright",215,340)
-    hitbox_sort= text(window,"sort",20,(0,0,0),"midbottom",550,585)
+    hitbox_page= (75,340,80,30)
 
     if mode == "select":
         hitbox_select= text(window,"select team",20,(0,0,0),"bottomright",1085,585)
@@ -192,11 +164,11 @@ def team_manager(window,mode,teams):
         hitbox_delete= text(window,"delete team",20,(0,0,0),"bottomright",1085,585)
     elif mode == "save":
         hitbox_save= text(window,"save team",20,(0,0,0),"bottomright",1085,585)
-
-
-    hitbox_page= (75,340,80,30)
+        hitbox_sort= text(window,"sort",20,(0,0,0),"midbottom",550,585)
 
     while True:
+        type_chart= get_type_chart()
+
         hitboxes= display_teams(window,teams,current_page,current_team)
         pygame.draw.rect(window,(150,250,150),hitbox_page,0)
         hitbox_page= text(window,"page "+str(current_page+1),20,(0,0,0),"midtop",115,340)
@@ -231,8 +203,8 @@ def team_manager(window,mode,teams):
                 current_page= (current_page+1)%(((len(teams)-1)//5)+1)
                 current_team= -1
 
-            elif hitbox_sort.collidepoint(event.pos):
-                teams= sort_teams(window,teams,type_chart,True)
+            elif mode == "save" and hitbox_sort.collidepoint(event.pos):
+                teams= sort_teams(window,teams,True)
                 pygame.draw.rect(window,(150,250,150),(550-300/2,585-100/2,300,100),0)
                 hitbox_sort= text(window,"sort",20,(0,0,0),"midbottom",550,585)
 
@@ -258,7 +230,8 @@ def team_manager(window,mode,teams):
 
 
 def team_generator(window):
-    global rosters
+    rosters= get_rosters()
+    types_amount= len(get_existing_types())-1
 
     window.fill((150,250,150))
     hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
@@ -268,13 +241,13 @@ def team_generator(window):
     text(window,"requirements",20,(0,0,0),"midtop",550,10)
 
     hitboxes= [[],[]]
-    for i in range(18):
-        pygame.draw.rect(window,(200,200,200),(225+9+36*i,70-30,18,100),0)
-        pygame.draw.rect(window,(100,100,100),(225+9+36*i,70-30,18,100),1)
-        text(window,"+",20,(100,100,100),"midbottom",225+18+36*i,70)
-        text(window,"-",20,(100,100,100),"midtop",225+18+36*i,70+40)
-        hitboxes[0]= hitboxes[0] + [pygame.Rect(225+9+36*i,70-30,18,30)]
-        hitboxes[1]= hitboxes[1] + [pygame.Rect(225+9+36*i,110,18,30)]
+    for index in range(types_amount):
+        pygame.draw.rect(window,(200,200,200),(225+9+36*index,70-30,18,100),0)
+        pygame.draw.rect(window,(100,100,100),(225+9+36*index,70-30,18,100),1)
+        text(window,"+",20,(100,100,100),"midbottom",225+18+36*index,70)
+        text(window,"-",20,(100,100,100),"midtop",225+18+36*index,70+40)
+        hitboxes[0]= hitboxes[0] + [pygame.Rect(225+9+36*index,70-30,18,30)]
+        hitboxes[1]= hitboxes[1] + [pygame.Rect(225+9+36*index,110,18,30)]
 
     current_requirements= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     current_roster= rosters[0]
@@ -319,7 +292,7 @@ def team_generator(window):
                 text(window,"choose roster",20,(0,0,0),"topleft",15,375)
                 text(window,"generate",20,(0,0,0),"midbottom",550,585)
                 text(window,"requirements",20,(0,0,0),"midtop",550,10)
-                for i in range(18):
+                for i in range(types_amount):
                     pygame.draw.rect(window,(200,200,200),(225+9+36*i,70-30,18,100),0)
                     pygame.draw.rect(window,(100,100,100),(225+9+36*i,70-30,18,100),1)
                     text(window,"+",20,(100,100,100),"midbottom",225+18+36*i,70)
@@ -347,7 +320,7 @@ def team_generator(window):
                     if hitboxes_roles[i].collidepoint(event.pos):
                         roles[i][0]= (roles[i][0] + 1)%7
 
-                for i in range(18):
+                for i in range(types_amount):
                     if hitboxes[0][i].collidepoint(event.pos) and current_requirements[i+1] < 6:
                         current_requirements[i+1]= current_requirements[i+1] + 1
                     elif hitboxes[1][i].collidepoint(event.pos) and current_requirements[i+1] > -6:
@@ -387,7 +360,7 @@ def chart(window):
 
 
 def pokedex_info(window):
-    global rosters
+    rosters= get_rosters()
 
     current_roster= rosters[-1]
     current_page= 0
@@ -450,3 +423,32 @@ def pokedex_info(window):
 
                     if hitbox_choices[i].collidepoint(event.pos):
                         current_pokemon= current_roster.pokemon_list[i-2+current_page*10]
+
+
+
+def options(window):
+    current_generation= get_generation()
+
+    window.fill((150,250,150))
+    hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
+    hitbox_generation= text(window,"change generation (current: "+str(current_generation+1)+")",20,(0,0,0),"center",550,300)
+
+    while True:
+        pygame.draw.rect(window,(150,250,150),(350,280,400,40),0)
+        text(window,"change generation (current: "+str(current_generation+1)+")",20,(0,0,0),"center",550,300)
+        pygame.display.update()
+
+        event= pygame.event.wait()
+
+        if event.type == pygame.QUIT:
+            return "quit"
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            if hitbox_generation.collidepoint(event.pos):
+                current_generation= (current_generation + 1)%8
+
+            if hitbox_back.collidepoint(event.pos):
+                set_generation(current_generation)
+                update_rosters()
+                return "menu"

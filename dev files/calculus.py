@@ -1,36 +1,6 @@
 from pokedex import *
+from charts import *
 import pygame, math
-
-
-
-existing_types=["none","normal","fire","water","electric","grass","ice","fighting","poison","ground","flying","psychic","bug","rock","ghost","dragon","dark","steel","fairy"]
-
-types_values= {}
-
-for i in range(len(existing_types)):
-    types_values[existing_types[i]]= i
-
-type_chart =[
-[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-[1,1,1,1,1,1,1,2,1,1,1,1,1,1,0,1,1,1,1],
-[1,1,0.5,2,1,0.5,0.5,1,1,2,1,1,0.5,2,1,1,1,0.5,0.5],
-[1,1,0.5,0.5,2,2,0.5,1,1,1,1,1,1,1,1,1,1,0.5,1],
-[1,1,1,1,0.5,1,1,1,1,2,0.5,1,1,1,1,1,1,0.5,1],
-[1,1,2,0.5,0.5,0.5,2,1,2,0.5,2,1,2,1,1,1,1,1,1],
-[1,1,2,1,1,1,0.5,2,1,1,1,1,1,2,1,1,1,2,1],
-[1,1,1,1,1,1,1,1,1,1,2,2,0.5,0.5,1,1,0.5,1,2],
-[1,1,1,1,1,0.5,1,0.5,0.5,2,1,2,0.5,1,1,1,1,1,0.5],
-[1,1,1,2,0,2,2,1,0.5,1,1,1,1,0.5,1,1,1,1,1],
-[1,1,1,1,2,0.5,2,0.5,1,0,1,1,0.5,2,1,1,1,1,1],
-[1,1,1,1,1,1,1,0.5,1,1,1,0.5,2,1,2,1,2,1,1],
-[1,1,2,1,1,0.5,1,0.5,1,0.5,2,1,1,2,1,1,1,1,1],
-[1,0.5,0.5,2,1,2,1,2,0.5,2,0.5,1,1,1,1,1,1,2,1],
-[1,0,1,1,1,1,1,0,0.5,1,1,1,0.5,1,2,1,2,1,1],
-[1,1,0.5,0.5,0.5,0.5,2,1,1,1,1,1,1,1,1,2,1,1,2],
-[1,1,1,1,1,1,1,2,1,1,1,0,2,1,0.5,1,0.5,1,2],
-[1,0.5,2,1,1,0.5,0.5,2,0,2,0.5,0.5,0.5,0.5,1,0.5,1,0.5,0.5],
-[1,1,1,1,1,1,1,0.5,2,1,1,1,0.5,1,1,0,0.5,2,1],
-]
 
 
 
@@ -40,7 +10,8 @@ def among(k,n):
 
 
 def attack_coefficient(attacking_type,defending_type):
-    global types_values , type_chart
+    types_values= get_types_values()
+    type_chart= get_type_chart()
 
     attacking_value= types_values[attacking_type]
     defending_value_1= types_values[defending_type[0]]
@@ -54,7 +25,7 @@ def attack_coefficient(attacking_type,defending_type):
 
 
 def type_weaknesses(defending_type):
-    global existing_types
+    existing_types= get_existing_types()
 
     weaknesses_chart= []
     for attacking_type in existing_types:
@@ -65,7 +36,8 @@ def type_weaknesses(defending_type):
 
 
 def pokemon_weaknesses(pokemon):
-    global pokedex, types_values
+    types_values= get_types_values()
+    pokedex= get_pokedex()
 
     weaknesses_chart= type_weaknesses(pokemon.type)
 
@@ -77,7 +49,7 @@ def pokemon_weaknesses(pokemon):
 
 
 def get_team_weaknesses(team):
-    global existing_types
+    existing_types= get_existing_types()
 
     team_weaknesses_chart= []
     for i in range(len(existing_types)):
@@ -98,7 +70,7 @@ def get_team_weaknesses(team):
 
 
 def typing_only_weaknesses(typing):
-    global types_values
+    types_values= get_types_values()
 
     weaknesses_chart= type_weaknesses(typing)
     ability= typing[2]
@@ -111,7 +83,7 @@ def typing_only_weaknesses(typing):
 
 
 def typings_only_weaknesses(typings):
-    global existing_types
+    existing_types= get_existing_types()
 
     typings_weaknesses_chart= []
     for i in range(len(existing_types)):
@@ -131,7 +103,7 @@ def typings_only_weaknesses(typings):
 
 
 
-def get_team_weakness_value(team,type_chart):
+def get_team_weakness_value(team):
     team_weakness_value= 0
     team_weaknesses= get_team_weaknesses(team)
     for weakness_value in team_weaknesses:
@@ -140,7 +112,8 @@ def get_team_weakness_value(team,type_chart):
 
 
 
-def sort_teams(window,teams,type_chart,display_progression):
+def sort_teams(window,teams,display_progression):
+    type_chart= get_type_chart()
     teams_amount= len(teams)
     progression_goal= int(teams_amount*(1+(teams_amount+1)/2))
     progression= [0]
@@ -150,7 +123,7 @@ def sort_teams(window,teams,type_chart,display_progression):
         pygame.event.pump()
         if display_progression == True:
             display_sort_progression(window,progression,progression_goal)
-        teams_weaknesses_values += [get_team_weakness_value(team,type_chart)]
+        teams_weaknesses_values += [get_team_weakness_value(team)]
 
     sorted_teams= []
     for amount_sorted in range(teams_amount):
