@@ -1,6 +1,6 @@
 from menus import *
 
-#print_dex(get_pokedex())
+
 
 def main():
 
