@@ -45,10 +45,7 @@ def info_pokemon(window,pokemon,anchor,x,y):
         except:
             icon_image= pygame.image.load("data/pokemons/unknown.png")
 
-        if pokemon.pid >= 808:
-            #surf= pygame.Surface((136,102))
-            #icon_image= surf.blit(icon_image, (0,0), (0,10,136,102))
-
+        if icon_image.get_width() > 40:
             icon_image= pygame.transform.scale(icon_image, (60,50))
             window.blit(icon_image,(x+135,y-16))
         else:
