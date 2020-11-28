@@ -160,7 +160,7 @@ def generate_team_rec(window,types,index,requirements,progression,progression_go
         display_progression(window,progression,progression_goal)
 
         for i in range(len(requirements)):
-
+            
             if typings_weaknesses_chart[i] < requirements[i]:
                 return []
 

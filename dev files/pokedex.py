@@ -93,7 +93,7 @@ def get_original_pokedex():
     original_pokedex += [Pokemon(18,"Pidgeot-Mega",['normal', 'flying'],no_ability,'18-1',['mega', 'MES'],['nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd'],[])]
     original_pokedex += [Pokemon(19,"Rattata",['normal', 'none'],no_ability,'19',[],['nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd'],[])]
     original_pokedex += [Pokemon(19,"Rattata Alola",['normal', 'dark'],Thick_Fat,'19-1',[],['nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd'],[])]
-    original_pokedex += [Pokemon(20,"Raticate",['normal', 'none'],no_ability,'20',['physical attacker', 'MES'],['UU', 'NU', 'NU', 'NU', 'NU', 'PU', 'PU', 'nd'],[])]
+    original_pokedex += [Pokemon(20,"Raticate",['normal', 'none'],no_ability,'20',['MES'],['nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd'],[])]
     original_pokedex += [Pokemon(20,"Raticate Alola",['normal', 'dark'],Thick_Fat,'20-1',['physical attacker', 'MES'],['UU', 'NU', 'NU', 'NU', 'NU', 'PU', 'PU', 'nd'],[])]
     original_pokedex += [Pokemon(21,"Spearow",['normal', 'flying'],no_ability,'21',[],['nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd', 'nd'],[])]
     original_pokedex += [Pokemon(22,"Fearow",['normal', 'flying'],no_ability,'22',['physical attacker', 'defoger', 'MES'],['UU', 'NU', 'UU', 'NU', 'NU', 'PU', 'PU', 'nd'],[])]

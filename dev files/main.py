@@ -1,5 +1,11 @@
-from menus import *
-
+from submenus.team_builder import team_builder
+from submenus.team_manager import team_manager
+from submenus.team_generator import team_generator
+from submenus.chart import chart
+from submenus.pokedex_info import pokedex_info
+from submenus.options import options
+from menu import menu
+import pygame
 
 
 def main():
