@@ -52,7 +52,7 @@ def menu(window):
 
 
 def team_builder(window):
-    rosters= get_rosters()
+    rosters= get_common_rosters()
 
     already_saved= False
     current_roster= rosters[0]
@@ -85,7 +85,7 @@ def team_builder(window):
                 return "menu"
 
             elif hitbox_save.collidepoint(event.pos) and len(current_team) != 0 and already_saved == False:
-                save_team(current_team)
+                save_team(current_team,"data/teams.txt")
                 already_saved= True
 
             elif hitbox_choices[0].collidepoint(event.pos):
@@ -143,11 +143,9 @@ def choose_roster(window,rosters,current_roster):
 def team_manager(window,mode,teams):
 
     if mode == "select" or mode == "manage":
-        team_file= open("data/teams.txt","r")
-        number= get_team_ammount(team_file.read())
-        team_file.close()
-        for i in range(number):
-            teams= teams + [get_team(i)]
+        team_ammount= get_team_ammount("data/teams.txt")
+        for team_index in range(team_ammount):
+            teams += [get_team(team_index,"data/teams.txt")]
 
     current_team= -1
     current_page= 0
@@ -212,12 +210,12 @@ def team_manager(window,mode,teams):
                 return teams[current_team+current_page*5]
 
             elif mode == "manage" and hitbox_delete.collidepoint(event.pos) and current_team != -1:
-                delete_team(current_team+current_page*5)
+                delete_team(current_team+current_page*5,"data/teams.txt")
                 del teams[current_team+current_page*5]
                 current_team= -1
 
             elif mode == "save" and hitbox_save.collidepoint(event.pos) and current_team != -1:
-                save_team(teams[current_team+current_page*5])
+                save_team(teams[current_team+current_page*5],"data/teams.txt")
                 del teams[current_team+current_page*5]
                 current_team= -1
 
@@ -230,7 +228,7 @@ def team_manager(window,mode,teams):
 
 
 def team_generator(window):
-    rosters= get_rosters()
+    rosters= get_common_rosters()
     types_amount= len(get_existing_types())-1
 
     window.fill((150,250,150))
@@ -360,7 +358,7 @@ def chart(window):
 
 
 def pokedex_info(window):
-    rosters= get_rosters()
+    rosters= get_common_rosters()
 
     current_roster= rosters[-1]
     current_page= 0
@@ -422,7 +420,9 @@ def pokedex_info(window):
                 for i in range(2,len(hitbox_choices)):
 
                     if hitbox_choices[i].collidepoint(event.pos):
-                        current_pokemon= current_roster.pokemon_list[i-2+current_page*10]
+                        pokemon= current_roster.pokemon_list[i-2+current_page*10]
+                        current_pokemon= pokemon
+
 
 
 

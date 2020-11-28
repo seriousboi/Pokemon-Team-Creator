@@ -231,8 +231,9 @@ def display_pokemon_roles(window,pokemon,x,y):
 
     i= 0
     for role in pokemon.properties:
-        text(window,role,20,(0,0,0),"topleft",x,y+i*30)
-        i= i + 1
+        if role != 'MES':
+            text(window,role,20,(0,0,0),"topleft",x,y+i*30)
+            i= i + 1
 
 
 
