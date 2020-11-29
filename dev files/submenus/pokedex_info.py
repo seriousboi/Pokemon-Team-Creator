@@ -16,6 +16,7 @@ def pokedex_info(window):
     hitbox_roster= text(window,"choose roster",20,(0,0,0),"midbottom",550,585)
 
     while True:
+        pygame.draw.rect(window,(150,250,150),(15,0,206,55),0)
         pygame.draw.rect(window,(200,200,250),(15,15,200,40),0)
         pygame.draw.rect(window,(100,100,100),(15,15,200,40),1)
         info_pokemon(window,current_pokemon,"topleft",19,19)

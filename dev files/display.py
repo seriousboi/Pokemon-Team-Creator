@@ -45,9 +45,11 @@ def info_pokemon(window,pokemon,anchor,x,y):
         except:
             icon_image= pygame.image.load("data/pokemons/unknown.png")
 
-        if icon_image.get_width() > 40:
-            icon_image= pygame.transform.scale(icon_image, (60,50))
-            window.blit(icon_image,(x+135,y-16))
+        if icon_image.get_width() > 68:
+            icon_image= pygame.transform.scale(icon_image, (68,56))
+            window.blit(icon_image,(x+135,y-20))
+        elif icon_image.get_width() > 40:
+            window.blit(icon_image,(x+135,y-20))
         else:
             window.blit(icon_image,(x+155,y+4))
 
@@ -93,7 +95,7 @@ def display_team(window,team,color,x,y):
 def display_page(window,roster,page):
 
     hitboxes= []
-    pygame.draw.rect(window,(150,250,150),(880,10,210,580),0)
+    pygame.draw.rect(window,(150,250,150),(880,0,220,600),0)
     text(window,"page "+str(page+1),20,(0,0,0),"midbottom",985,585)
     hitboxes= hitboxes + [text(window,"<<",20,(0,0,0),"bottomleft",885,585)]
     hitboxes= hitboxes + [text(window,">>",20,(0,0,0),"bottomright",1085,585)]
