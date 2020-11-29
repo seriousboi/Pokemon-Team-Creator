@@ -19,13 +19,6 @@ def get_team_ammount(filename):
 
 
 
-def clean_teams(filename):
-    teams= open(filename,"w")
-    teams.write("0")
-    teams.close()
-
-
-
 def get_team(number,filename):
     txt_list= get_txt_list(filename)
 
@@ -72,4 +65,11 @@ def delete_team(number,filename):
 
     file= open(filename,"w")
     file.writelines(lines)
+    file.close()
+
+
+
+def clean_teams(filename):
+    file= open(filename,"w")
+    file.write("0")
     file.close()
