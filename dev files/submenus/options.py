@@ -1,5 +1,6 @@
 from display import text
 from charts import get_generation, set_generation
+from pokedex import update_pokedex
 from rosters import update_rosters
 import pygame
 
@@ -29,5 +30,6 @@ def options(window):
 
             if hitbox_back.collidepoint(event.pos):
                 set_generation(current_generation)
+                update_pokedex()
                 update_rosters()
                 return "menu"
