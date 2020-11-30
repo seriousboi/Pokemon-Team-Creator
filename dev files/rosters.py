@@ -1,6 +1,7 @@
 from pokedex import *
 from charts import *
-
+from storage import get_txt_list
+import glob
 
 
 class Roster():
@@ -53,7 +54,7 @@ def update_tiers_rosters_list():
 
     tiers= ["OU","UU","RU","NU","PU","uber"]
     generation= get_generation()
-    
+
     for tier in tiers:
         tiers_rosters[tier].pokemon_list= []
 
@@ -83,6 +84,7 @@ def update_MES_roster():
 def get_common_rosters():
     common_rosters_list=[]
     common_rosters_list += get_tiers_rosters_list()
+    common_rosters_list += get_custom_rosters_list()
     common_rosters_list += [get_pokedex_roster()]
     common_rosters_list += [get_MES_roster()]
     return common_rosters_list
@@ -99,6 +101,24 @@ def get_MES_roster():
     global MES_roster
     return MES_roster
 
+def get_custom_rosters_list():
+    filenames= glob.glob('./data/custom_rosters/*.txt')
+    custom_rosters=[]
+    for filename in filenames:
+        custom_rosters += [get_custom_roster(filename)]
+    return custom_rosters
+
+def get_custom_roster(filename):
+    txt_list= get_txt_list(filename)
+
+    pokemon_list= []
+    size= int(txt_list[0][0])
+    for pokemon_index in range(size):
+              pokemon_picid= txt_list[0][pokemon_index+1]
+              pokemon_list= pokemon_list + [get_pokemon_from_picid(pokemon_picid)]
+
+    roster= Roster(filename[22:len(filename)-4],pokemon_list)
+    return roster
 
 
 

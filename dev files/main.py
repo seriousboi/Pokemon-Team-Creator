@@ -1,10 +1,11 @@
-from submenus.team_builder import team_builder
-from submenus.team_manager import team_manager
-from submenus.team_generator import team_generator
-from submenus.chart import chart
-from submenus.pokedex_info import pokedex_info
-from submenus.options import options
-from menu import menu
+from menus.team_builder import team_builder
+from menus.team_manager import team_manager
+from menus.team_generator import team_generator
+from menus.chart import chart
+from menus.pokedex_info import pokedex_info
+from menus.options import options
+from menus.roster_creator import roster_creator
+from menus.main_menu import main_menu
 import pygame
 
 
@@ -23,7 +24,7 @@ def main():
     while state != "quit":
 
         if state == "menu":
-            state= menu(window)
+            state= main_menu(window)
         if state == "team builder":
             state= team_builder(window)
         if state == "team manager":
@@ -36,6 +37,8 @@ def main():
             state= pokedex_info(window)
         if state == "options":
             state= options(window)
+        if state == "roster creator":
+            state= roster_creator(window)
 
     pygame.display.quit()
 

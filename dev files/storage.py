@@ -1,4 +1,5 @@
 from pokedex import *
+import glob
 
 
 
@@ -16,6 +17,11 @@ def get_txt_list(filename):
 def get_team_ammount(filename):
     txt_list= get_txt_list(filename)
     return int(txt_list[0][0])
+
+
+
+def get_custom_rosters_ammount():
+    return len(glob.glob('./data/custom_rosters/*.txt'))
 
 
 
@@ -52,6 +58,21 @@ def save_team(team,filename):
     file= open(filename,"w")
     file.writelines(lines)
     file.close()
+
+
+
+def save_custom_roster(custom_roster):
+    custom_rosters_amount= get_custom_rosters_ammount()
+    filename= "data/custom_rosters/custom roster "+str(custom_rosters_amount+1)+".txt"
+    file= open(filename,"w")
+    size= len(custom_roster)
+    line= str(size)
+    for pokemon in custom_roster:
+        line += ' '+pokemon.picid
+    line += '\n'
+    file.writelines([line])
+    file.close()
+
 
 
 
