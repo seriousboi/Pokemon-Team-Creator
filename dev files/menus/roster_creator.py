@@ -15,7 +15,8 @@ def roster_creator(window):
     window.fill((150,250,150))
     hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
     hitbox_roster= text(window,"choose roster",20,(0,0,0),"topleft",15,345)
-    hitbox_undo= text(window,"undo",20,(0,0,0),"topleft",15,375)
+    hitbox_add= text(window,"add whole roster",20,(0,0,0),"topleft",15,375)
+    hitbox_undo= text(window,"undo",20,(0,0,0),"topleft",15,405)
     hitbox_save= text(window,"save custom roster",20,(0,0,0),"midbottom",550,585)
     pygame.display.update()
 
@@ -56,6 +57,10 @@ def roster_creator(window):
 
             elif hitbox_roster.collidepoint(event.pos):
                 current_roster= choose_roster(window,rosters,current_roster)
+
+            elif hitbox_add.collidepoint(event.pos):
+                current_custom_roster += current_roster.pokemon_list
+                already_saved= False
 
             for i in range(2,len(hitbox_choices)):
 

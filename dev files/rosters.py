@@ -13,15 +13,21 @@ class Roster():
 
 
 def init_rosters():
+    init_all_pokemons_roster()
     init_pokedex_roster()
     init_tiers_rosters()
     init_maximum_evolution_stage_pokemons_roster()
 
+def init_all_pokemons_roster():
+    global all_pokemons_roster
+
+    pokedex= get_original_pokedex()
+    all_pokemons_roster= Roster("all pokemons",pokedex)
+
 def init_pokedex_roster():
     global pokedex_roster
 
-    pokedex= get_pokedex()
-    pokedex_roster= Roster("all pokemons",pokedex)
+    pokedex_roster= Roster("pokedex",[])
 
 def init_tiers_rosters():
     global tiers_rosters
@@ -39,15 +45,26 @@ def init_maximum_evolution_stage_pokemons_roster():
 
 
 def update_rosters():
+    update_all_pokemons_roster()
     update_pokedex_roster()
     update_tiers_rosters_list()
     update_MES_roster()
 
+def update_all_pokemons_roster():
+    global all_pokemons_roster
+
+    pokedex= get_pokedex()
+    all_pokemons_roster.pokemon_list= pokedex
+
 def update_pokedex_roster():
     global pokedex_roster
 
+    pokedex_list= []
     pokedex= get_pokedex()
-    pokedex_roster.pokemon_list= pokedex
+    for pokemon in pokedex:
+        if pokemon.generation <= get_generation():
+            pokedex_list += [pokemon]
+    pokedex_roster.pokemon_list= pokedex_list
 
 def update_tiers_rosters_list():
     global tiers_rosters, tiers_rosters_list
@@ -72,7 +89,7 @@ def update_MES_roster():
     global MES_roster
 
     MES_list= []
-    pokedex= get_pokedex()
+    pokedex= get_pokedex_roster().pokemon_list
     for pokemon in pokedex:
         if 'MES' in pokemon.properties:
             MES_list += [pokemon]
@@ -85,9 +102,14 @@ def get_common_rosters():
     common_rosters_list=[]
     common_rosters_list += get_tiers_rosters_list()
     common_rosters_list += get_custom_rosters_list()
+    common_rosters_list += [get_all_pokemons_roster()]
     common_rosters_list += [get_pokedex_roster()]
     common_rosters_list += [get_MES_roster()]
     return common_rosters_list
+
+def get_all_pokemons_roster():
+    global all_pokemons_roster
+    return all_pokemons_roster
 
 def get_pokedex_roster():
     global pokedex_roster
@@ -122,9 +144,10 @@ def get_custom_roster(filename):
 
 
 
-pokedex_roster= []
-tiers_rosters= {}
+all_pokemons_roster= Roster("Roster",[])
+pokedex_roster= Roster("Roster",[])
+MES_roster= Roster("Roster",[])
 tiers_rosters_list= []
-MES_roster= []
+tiers_rosters= {}
 init_rosters()
 update_rosters()

@@ -42,6 +42,4 @@ def main():
 
     pygame.display.quit()
 
-
-
 main()

@@ -4,7 +4,6 @@ import pygame
 
 
 def main_menu(window):
-
     window.fill((150,250,150))
     title= text(window,"Pokemon Team Creator (work in progress)",30,(0,0,0),"center",550,50)
     Turtwig= pygame.image.load("data/icons/wig.png")
@@ -16,7 +15,6 @@ def main_menu(window):
     hitbox_chart= text(window,"type chart",20,(0,0,0),"center",550,400)
     hitbox_pokedex= text(window,"pokedex",20,(0,0,0),"center",550,450)
     hitbox_options= text(window,"options",20,(0,0,0),"center",550,500)
-
 
     pygame.display.update()
 
