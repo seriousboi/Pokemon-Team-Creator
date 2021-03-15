@@ -6,6 +6,7 @@ from menus.pokedex_info import pokedex_info
 from menus.options import options
 from menus.roster_creator import roster_creator
 from menus.main_menu import main_menu
+from menus.help import help_menu
 import pygame
 
 
@@ -39,6 +40,8 @@ def main():
             state= options(window)
         if state == "roster creator":
             state= roster_creator(window)
+        if state == "help":
+            state= help_menu(window)
 
     pygame.display.quit()
 

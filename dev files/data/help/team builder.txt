@@ -1,0 +1,15 @@
+Main use:
+The main purpose of the team builder is to create only a part of a team, then to give this part to the team generator to build from it.
+
+
+Interface:
+-At the left is the current team (empty at the start).
+-At the top is the team's type sensitivity (see the type sensitivity section for more informations)
+-At the right is the roster you can choose pokemons from, to add a pokemon to the team click on it, to navigate through the roster click on the
+arrows at the bottom of it.
+-Under the team is the "choose roster" option, click on it to have the available rosters offered at the right, then click on the roster you
+want to choose pokemons from.
+-Under the team is the "save" option, click on it to save your team, to see your saved teams go into the team manager, your team does not
+need to have six pokemons to be saved, clicking on "save" several times will not save the same team several times.
+-Under the team is the "undo" option, click on it to remove the last pokemon added to the team.
+-At the bottom left is the back option, click on it to go back to the main menu.
