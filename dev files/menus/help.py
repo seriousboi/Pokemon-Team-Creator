@@ -5,18 +5,18 @@ import pygame
 
 
 def help_menu(window):
-    help_list=["general infos","type sensitivity","team builder infos"]
+    help_list=["general infos","team builder","roster creator","team generator","type sensitivity","report a bug"]
     help_hitboxes=[]
     help_length= len(help_list)
     for index in range(help_length):
-        help_hitboxes += [text(window,help_list[index],20,(0,0,0),"center",550,200+50*index)]
+        help_hitboxes += [text(window,help_list[index],20,(0,0,0),"center",550,150+50*index)]
     hitbox_back= text(window,"back",20,(0,0,0),"bottomleft",15,585)
 
     while True:
         window.fill((150,250,150))
         text(window,"back",20,(0,0,0),"bottomleft",15,585)
         for index in range(help_length):
-            text(window,help_list[index],20,(0,0,0),"center",550,200+50*index)
+            text(window,help_list[index],20,(0,0,0),"center",550,150+50*index)
         pygame.display.update()
 
         event= pygame.event.wait()

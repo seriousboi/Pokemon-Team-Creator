@@ -1,0 +1,16 @@
+Main use:
+The team generator is the core functionality of this software, it will generate all the teams that stems from the starting team you gave it and
+validate the requirements you chose , the pokemon used will be from the roster you picked.
+The generation might take a lot of time if you gave it no starting team and/or a huge roster to build from.
+If no team can match the requirements then no team will be suggested at the end of the generation and it will not prevent the generation from
+taking a long time, so make sure to start with loose requirements.
+
+Interface:
+-At the left is the starting team that the generator will build from (empty by default), it is recommended to at least give one pokemon.
+-At the top are the type sensitivity requirements (see the type sensitivity section for more informations).
+-Under the starting team is the "add starting team" option,
+-Under the starting team is the "choose roster" option,
+-Under the starting team is the "have a mega" option,
+-At the right are the requirements,
+-At the bottom is the "generate" option,
+-At the bottom left is the back option, click on it to go back to the main menu.

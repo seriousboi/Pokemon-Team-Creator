@@ -1,3 +1,24 @@
-hey
-cher amis, ne negligeon pas nos cher amis les calmars,
-fabuleuses petites saucisses volantes!
+The purpose of this software is to procedurally generate efficient strategic teams for singles Smogon formats of all pokemon generations.
+
+How to use it:
+
+-First it is recommended to create a part of a team using the team builder, put in the pokemons you know you want in your team.
+This step is not necessary but is useful if you want a specific synergy in your team (such as Tapu-Howl in 7G).
+The more pokemons you have in your pre-generation team the faster the generation will be.
+
+-If you only want pokemons from a specific smogon tier you can skip this step.
+If you want to play in a tier but dont mind having pokemons from lower tiers then you can create a personalized roster by fusing several
+default rosters in the roster creator.
+Be careful when doing this since the time of the generation will greatly increase with the size of the roster.
+
+-You can now use the team generator by selecting the team part you want to generate from, the roster from which pokemons will be added and
+the requirements you want your team to fit.
+After the generation you will be shown all the teams that fit your requirements so you can save the ones you are interested in.
+
+Other functionalities:
+
+-The team manager allows you to look at the teams you have saved.
+
+-The type chart and the pokedex corresponding to the generation can be consulted.
+
+-The generation can be changed in the options.

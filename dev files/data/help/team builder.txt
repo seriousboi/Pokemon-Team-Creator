@@ -1,5 +1,6 @@
 Main use:
-The main purpose of the team builder is to create only a part of a team, then to give this part to the team generator to build from it.
+The main purpose of the team builder is to create only a part of a team, then to give this part to the team generator and generate a full team
+from it.
 
 
 Interface:

@@ -15,7 +15,7 @@ def main_menu(window):
     hitbox_chart= text(window,"type chart",20,(0,0,0),"center",550,350)
     hitbox_pokedex= text(window,"pokedex",20,(0,0,0),"center",550,400)
     hitbox_options= text(window,"options",20,(0,0,0),"center",550,450)
-    hitbox_help= text(window,"help",20,(0,0,0),"center",550,500)
+    hitbox_help= text(window,"help/infos",20,(0,0,0),"center",550,500)
 
     pygame.display.update()
 
