@@ -8,9 +8,17 @@ taking a long time, so make sure to start with loose requirements.
 Interface:
 -At the left is the starting team that the generator will build from (empty by default), it is recommended to at least give one pokemon.
 -At the top are the type sensitivity requirements (see the type sensitivity section for more informations).
--Under the starting team is the "add starting team" option,
--Under the starting team is the "choose roster" option,
--Under the starting team is the "have a mega" option,
--At the right are the requirements,
--At the bottom is the "generate" option,
+-Under the starting team is the "add starting team" option, click on it to have access to the team manager from which you can choose the
+starting team.
+-Under the team is the "choose roster" option, click on it to have the available rosters offered at the right, then click on the roster from which
+you want pokemons to be added.
+-Under the starting team is the "have a mega" option, click on it to have only teams with a mega-evolution generated.
+
+-At the right are the requirements, click on a criteria to increase the minimum amount of pokemons that fit the criteria that will be needed in
+the generated teams.
+For instance if you want balanced teams you could choose the following requirements (physical attacker:1, special attacker:1, physical wall:1,
+special wall:1, rock setter:1, defoger:1, priority user:1).
+And for stall teams (physical wall:3, special wall:3, spinner:1, defoger:1).
+
+-At the bottom is the "generate" option, click on it to launch the generation.
 -At the bottom left is the back option, click on it to go back to the main menu.

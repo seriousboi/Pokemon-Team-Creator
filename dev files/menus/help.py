@@ -5,7 +5,7 @@ import pygame
 
 
 def help_menu(window):
-    help_list=["general infos","team builder","roster creator","team generator","type sensitivity","report a bug"]
+    help_list=["general infos","team builder","team generator","type sensitivity","report a bug"]
     help_hitboxes=[]
     help_length= len(help_list)
     for index in range(help_length):

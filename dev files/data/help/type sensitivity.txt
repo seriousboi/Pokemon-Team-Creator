@@ -1,1 +1,24 @@
-rien
+The type sensitivity of a team to a certain type is the number of pokemons that resist or are immune to that type minus the number of
+pokemons that are weak to that type.
+
+One important thing to note is that this type sensitivity does not take into account how much a pokemon is weak or resist to a type.
+So a pokemon with an immunity with two pokemons with a regular weakness will result in a type sensitivity of -1.
+And a pokemon with a strong weakness (x4) with two pokemons with a regular resistance will result in a type sensitivity of 1.
+
+
+Sensitivity requirements of the team generator:
+
+Those requirements are the minimum type sensitivity (for each type) of the teams that will be generated.
+
+Having all the requirements at 0 will ensure that the teams generated are balanced type-wise.
+Most balanced teams have many type sensitivities above 0 but the requirements are a minimum so those stronger teams will still be
+generated.
+
+The requirements can be toyed with to get specific teams to be generated.
+If you want a team that has no trouble switching a lot with stealth rocks on your side you could set the rock type sensitivity at 3.
+If you want a team that counters rain teams you could set the water type sensitivity at 3 and the ice type sensitivity at 2. (or just use TTar)
+If you want to give the generator more leeway (useful if you gave a starting team that is unbalanced) you could set all the typesensitivities
+at -1.
+
+Do not be too restrictive with your requirements, setting all the type sensitivities at 1 will most likely result in having no team generated.
+Remember that those requirements are minimums and that the best teams will always be generated.
