@@ -53,13 +53,13 @@ def info_pokemon(window,pokemon,anchor,x,y):
         else:
             window.blit(icon_image,(x+155,y+4))
 
-        type_name= "data/types/" + pokemon.type[0] + "IC.GIF"
+        type_name= "data/types/" + pokemon.type[0] + "IC.gif"
         type_image= pygame.image.load(type_name)
         window.blit(type_image,(x,y))
 
         if pokemon.type[1] != "none":
 
-            type_name= "data/types/" + pokemon.type[1] + "IC.GIF"
+            type_name= "data/types/" + pokemon.type[1] + "IC.gif"
             type_image= pygame.image.load(type_name)
             window.blit(type_image,(x+35,y))
 
@@ -143,7 +143,7 @@ def display_team_weaknesses(window,team,x,y):
 
             pygame.draw.rect(window,(200,200,200),(x+i*36,y,36,40),0)
 
-            type_image= pygame.image.load("data/types/" + type_name + "IC.GIF")
+            type_image= pygame.image.load("data/types/" + type_name + "IC.gif")
             window.blit(type_image,(x+2+i*36,y+4))
             if weaknesses_chart[types_values[type_name]] >= 2:
                 color= [50,150,50]
@@ -213,7 +213,7 @@ def display_pokemon_weaknesses(window,pokemon,x,y):
             pygame.draw.rect(window,(200,200,200),(x+i*36,y,36,20),0)
             pygame.draw.rect(window,color_1,(x+i*36,y+20,36,20),0)
             pygame.draw.line(window,(100,100,100),(x+35+i*36,y),(x+35+i*36,y+39))
-            type_image= pygame.image.load("data/types/" + type_name + "IC.GIF")
+            type_image= pygame.image.load("data/types/" + type_name + "IC.gif")
             window.blit(type_image,(x+2+i*36,y+2))
             text(window,coef,17,color_2,"center",x+20+i*36,y+28)
             i= i+1
@@ -251,7 +251,7 @@ def display_requirements(window,requirements,x,y):
 
             pygame.draw.rect(window,(200,200,200),(x+i*36,y,36,40),0)
 
-            type_image= pygame.image.load("data/types/" + type_name + "IC.GIF")
+            type_image= pygame.image.load("data/types/" + type_name + "IC.gif")
             window.blit(type_image,(x+2+i*36,y+4))
 
             coef= requirements[i+1]
