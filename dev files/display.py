@@ -289,7 +289,7 @@ def display_chart(window,mode):
     for index in range(types_amount-1):
         pygame.draw.line(window,(100,100,100),(200,15+index*30),(200+horizontal_length,15+index*30))
         pygame.draw.line(window,(100,100,100),(200+index*36,15),(200+index*36,15+vertical_length))
-        type_image= pygame.image.load("data/types/" + existing_types[index+1] + "ic.gif")
+        type_image= pygame.image.load("data/types/" + existing_types[index+1] + "IC.gif")
         window.blit(type_image,(202+(index+1)*36,23))
         window.blit(type_image,(202,23+(index+1)*30))
     pygame.draw.line(window,(100,100,100),(200,15+(index+1)*30),(200+horizontal_length,15+(index+1)*30))
